@@ -73,8 +73,8 @@ button:disabled{opacity:.4;cursor:default}
 <style id="docstyle">
 .paper{background:#fff;color:#000;font:11px/1.3 "Palatino Linotype","Book Antiqua",Palatino,Georgia,serif;padding:24px;max-width:8.5in;margin:0 auto}
 .paper .hdr{text-align:right;font-size:8px;margin-left:auto;width:2.2in;text-align:left}
-.paper .ttl{display:flex;justify-content:space-between;align-items:baseline;font-size:15px;margin-top:22px;gap:8px}
-.paper .asof{display:inline-block;min-width:1.7in;text-align:center;margin-left:6px;font-size:11px}
+.paper .ttl{text-align:center;font-size:15px;margin-top:22px;white-space:nowrap}.paper .asr{margin:3px 0 0;font-size:12px}
+.paper .asof{display:inline-block;min-width:2.1in;text-align:center;margin-left:6px;font-size:12px;text-decoration:none;border-bottom:1px solid #000}
 .paper .c{text-align:center}.paper .it{font-style:italic;margin:12px 0 14px}
 .paper .nm{display:grid;grid-template-columns:1.4fr 1fr;gap:20px;font-size:10px;margin-top:6px}
 .paper .ln,.paper .lb{display:grid;grid-template-columns:1.4fr 1fr .5fr;gap:10px;margin-left:48px;text-align:center}
@@ -108,7 +108,7 @@ button:disabled{opacity:.4;cursor:default}
   <input type="file" id="file" accept=".json,application/json" hidden>
 </header>
 <main id="app"></main>
-<footer class="foot"><span>MySALN · Created by <a href="https://princegideon15-portfolio.vercel.app/" target="_blank" rel="noopener noreferrer">GPDB</a></span><span aria-hidden="true">·</span><a href="https://github.com/princegideon15/my-saln.git" target="_blank" rel="noopener noreferrer">GitHub</a></footer>
+<footer class="foot"><span>MySALN · Created by <a href="https://vercel.com/gp-dev2/princegideon15-portfolio" target="_blank" rel="noopener noreferrer">GPDB</a></span><span aria-hidden="true">·</span><a href="https://github.com/princegideon15/my-saln.git" target="_blank" rel="noopener noreferrer">GitHub</a></footer>
 <div id="printArea"></div>
 <dialog id="dlg"><h2 id="dT"></h2><p id="dM" class="mu"></p><div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px"><button id="dNo">Cancel</button><button id="dYes" class="pri">Confirm</button></div></dialog>
 <dialog id="prev" class="wide"><div style="display:flex;gap:8px;justify-content:flex-end;margin-bottom:8px"><button id="pPrint" class="pri">Print</button><button id="pDl">Download PDF</button><button id="pClose">Close</button></div><div id="pBody" style="overflow:auto"></div></dialog>
@@ -228,7 +228,7 @@ function docHTML(e){
  const asof=e.asof?new Date(e.asof+"T00:00:00").toLocaleDateString("en-PH",{year:"numeric",month:"long",day:"numeric"}):"";
  const rows=(a,n,cls,f)=>pad(a,n).map(r=>`<tr class="${cls}">${f(r)}</tr>`).join("");
  return`<div class="paper"><div class="hdr">SALN Form AS-1 (Declarant)<br>Per CSC Resolution No. 2500632<br>Promulgated on 25 June 2025</div>
- <div class="ttl"><b>SWORN STATEMENT OF ASSETS,</b><span>As of <u class="asof">${esc(asof)}</u></span><b>LIABILITIES AND NET WORTH</b></div>
+ <div class="ttl"><b>SWORN STATEMENT OF ASSETS, LIABILITIES AND NET WORTH</b></div><div class="c asr">As of <u class="asof">${esc(asof)}</u></div>
  <div class="c it">(Additional sheet/s for the declarant)</div>
  <div class="nm"><div><b>NAME:</b><div class="ln"><span>${esc(d.fam)}</span><span>${esc(d.first)}</span><span>${esc(d.mi)}</span></div><div class="lb"><span>(Family Name)</span><span>(First Name)</span><span>(M.I.)</span></div></div><div class="n2"><div><b>POSITION:</b><u>${esc(d.pos)}</u></div><div><b>AGENCY/OFFICE:</b><u>${esc(d.ag)}</u></div></div></div>
  <hr class="thick"><div class="c ul"><b>ASSETS, LIABILITIES AND NET WORTH</b></div>
