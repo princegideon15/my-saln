@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MySALN</title>
+<style>
+:root{--bg:#f4f6fb;--sf:#fff;--sf2:#eef1f8;--tx:#16203a;--mu:#5b6685;--bd:#d9dfec;--ac:#2347b8;--ac2:#e6ecff;--dg:#c62828;--ok:#1b7f4b;--sh:0 1px 3px rgba(20,30,60,.12);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a0a0b;--sf:#161618;--sf2:#212124;--tx:#ececee;--mu:#9b9ba3;--bd:#303034;--ac:#3478f6;--ac2:#14233f;--dg:#ff6b6b;--ok:#5fd397;--sh:none;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0a0a0b;--sf:#161618;--sf2:#212124;--tx:#ececee;--mu:#9b9ba3;--bd:#303034;--ac:#3478f6;--ac2:#14233f;--dg:#ff6b6b;--ok:#5fd397;--sh:none;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--sf);border-bottom:1px solid var(--bd);display:flex;gap:10px;align-items:center;padding:10px 16px;flex-wrap:wrap}
+.logo{font-weight:700;font-size:17px;display:flex;gap:8px;align-items:center;margin-right:auto}
+.logo i{background:var(--ac);color:#fff;border-radius:8px;width:30px;height:30px;display:grid;place-items:center;font-style:normal;font-size:13px}
+main{max-width:1000px;margin:0 auto;padding:20px 16px 80px}
+button,.btn{font:inherit;cursor:pointer;border:1px solid var(--bd);background:var(--sf);color:var(--tx);border-radius:8px;padding:7px 12px;display:inline-flex;gap:6px;align-items:center}
+button:hover,.btn:hover{background:var(--sf2)}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--ac);outline-offset:1px}
+.pri{background:var(--ac);color:#fff;border-color:var(--ac)}.pri:hover{background:var(--ac);filter:brightness(1.1)}
+.dng{color:var(--dg);border-color:var(--dg)}.sm{padding:4px 9px;font-size:13px}
+h1{font-size:22px;margin:0 0 4px}.mu{color:var(--mu)}
+.card{background:var(--sf);border:1px solid var(--bd);border-radius:12px;box-shadow:var(--sh);padding:16px;margin-bottom:14px}
+.entry{display:grid;grid-template-columns:90px 1fr auto;gap:14px;align-items:center}
+.yr{font-size:26px;font-weight:800;color:var(--ac);background:var(--ac2);border-radius:10px;text-align:center;padding:10px 0}
+.acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.nw{font-weight:700}
+.badge{font-size:12px;padding:1px 8px;border-radius:99px;background:var(--sf2);color:var(--mu);margin-left:6px}
+.empty{text-align:center;padding:48px 16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+label{display:block;font-size:13px;color:var(--mu);font-weight:600}
+input,select,textarea{width:100%;font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:8px 10px;margin-top:3px}
+input[type=radio]{width:auto;margin:0 6px 0 0}
+.opt{display:inline-flex;align-items:center;margin-right:16px;font-size:14px;color:var(--tx);font-weight:400}
+h2{font-size:16px;margin:0 0 10px}h3{font-size:14px;margin:16px 0 8px;color:var(--mu);text-transform:uppercase;letter-spacing:.04em}
+.row{border:1px solid var(--bd);border-radius:10px;padding:10px;margin-bottom:8px;background:var(--sf2)}
+.row .grid{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+.rowh{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font-size:12px;color:var(--mu)}
+.bar{position:sticky;bottom:calc(env(safe-area-inset-bottom,0px));z-index:4;background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:10px 14px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;box-shadow:0 -2px 12px rgba(0,0,0,.12)}
+.bar b{display:block;font-size:16px}.bar span{font-size:12px;color:var(--mu)}
+dialog{border:1px solid var(--bd);border-radius:14px;background:var(--sf);color:var(--tx);padding:20px;max-width:min(440px,92vw)}
+dialog::backdrop{background:rgba(0,0,0,.5)}
+dialog.wide{max-width:min(900px,96vw);width:100%;padding:12px;max-height:92vh;overflow:auto}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:90px;background:var(--tx);color:var(--bg);padding:9px 16px;border-radius:99px;z-index:20;font-size:14px}
+.err{color:var(--dg);font-size:13px;margin-top:4px}
+@media(max-width:640px){.entry{grid-template-columns:70px 1fr}.acts{grid-column:1/-1;justify-content:flex-start}}
+#printArea{display:none}
+@media print{@page{size:8.5in 13in;margin:.5in}:root{padding:0}body>*:not(#printArea){display:none!important}#printArea{display:block}body{background:#fff;margin:0}#printArea .paper{max-width:none;padding:0;margin:0}#printArea .paper .hdr{position:fixed;top:-.32in;right:0;margin:0}}
+
+header{backdrop-filter:blur(10px);background:color-mix(in srgb,var(--sf) 88%,transparent)}
+button,.btn{transition:background .15s,transform .05s;font-weight:500}button:active{transform:scale(.98)}
+.pri{box-shadow:0 1px 2px rgba(35,71,184,.35)}
+.card{border-radius:14px;transition:box-shadow .15s,border-color .15s}.entry:hover{border-color:var(--ac)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:14px}
+.stats div{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:10px 14px}.stats b{display:block;font-size:18px}.stats span{font-size:12px;color:var(--mu)}
+.search{max-width:360px;margin:0 0 14px}
+.logo{gap:10px;font-size:19px;letter-spacing:-.02em}.wm{font-weight:500}.wm b{font-weight:800;color:var(--ac)}.logo svg{flex:none;filter:drop-shadow(0 1px 2px rgba(20,30,60,.25))}
+.foot{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;padding:8px 16px 28px;font-size:13px;color:var(--mu)}.foot a{color:var(--ac);text-decoration:none;font-weight:600}.foot a:hover{text-decoration:underline}
+.chips{position:sticky;top:calc(env(safe-area-inset-top,0px) + 54px);z-index:4;display:flex;gap:6px;overflow-x:auto;padding:8px 0;margin-bottom:6px;background:var(--bg)}
+.chips button{border-radius:99px;white-space:nowrap;font-size:13px;padding:5px 12px}
+.card[id]{scroll-margin-top:110px}
+input,select{transition:border-color .15s,box-shadow .15s}input:focus{border-color:var(--ac);box-shadow:0 0 0 3px var(--ac2)}
+#cb{position:fixed;z-index:30;max-height:260px;overflow:auto;background:var(--sf);border:1px solid var(--bd);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.25);padding:4px}
+#cb div{padding:7px 10px;border-radius:7px;cursor:pointer;font-size:14px}#cb div:hover,#cb div.on{background:var(--ac2)}#cb .nm0{cursor:default;color:var(--mu);font-size:13px}
+label{position:relative}.span{grid-column:1/-1}
+.ic{display:inline-grid;place-items:center;width:16px;height:16px;margin-left:6px;border-radius:50%;background:var(--ac2);color:var(--ac);font:700 11px/1 Georgia,serif;font-style:italic;cursor:help;vertical-align:1px}
+.ic:hover::after,.ic:focus::after{content:attr(data-tip);position:absolute;left:0;top:100%;z-index:12;width:min(260px,90vw);padding:7px 10px;border-radius:8px;background:var(--tx);color:var(--bg);font:400 12px/1.4 system-ui,sans-serif;font-style:normal;box-shadow:0 6px 18px rgba(0,0,0,.3)}
+#tcard{position:fixed;z-index:61;width:min(340px,calc(100vw - 16px));background:var(--sf);color:var(--tx);border:1px solid var(--bd);border-radius:14px;padding:14px 16px;box-shadow:0 12px 32px rgba(0,0,0,.35)}#tspot{position:fixed;z-index:60;border-radius:12px;box-shadow:0 0 0 3px var(--ac),0 0 0 100vmax rgba(0,0,0,.5);pointer-events:none;transition:all .2s}#tDots{display:flex;gap:6px;margin:12px 0}#tDots i{width:8px;height:8px;border-radius:50%;background:var(--bd)}#tDots i.on{background:var(--ac);width:22px;border-radius:99px}
+button:disabled{opacity:.4;cursor:default}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<style id="docstyle">
+.paper{background:#fff;color:#000;font:11px/1.3 "Palatino Linotype","Book Antiqua",Palatino,Georgia,serif;padding:24px;max-width:8.5in;margin:0 auto}
+.paper .hdr{text-align:right;font-size:8px;margin-left:auto;width:2.2in;text-align:left}
+.paper .ttl{display:flex;justify-content:space-between;align-items:baseline;font-size:15px;margin-top:22px;gap:8px}
+.paper .asof{display:inline-block;min-width:1.7in;text-align:center;margin-left:6px;font-size:11px}
+.paper .c{text-align:center}.paper .it{font-style:italic;margin:12px 0 14px}
+.paper .nm{display:grid;grid-template-columns:1.4fr 1fr;gap:20px;font-size:10px;margin-top:6px}
+.paper .ln,.paper .lb{display:grid;grid-template-columns:1.4fr 1fr .5fr;gap:10px;margin-left:48px;text-align:center}
+.paper .ln{border-bottom:1px solid #000;min-height:15px}.paper .lb{font-size:8px;font-style:normal}
+.paper .n2 div{border-bottom:1px solid #000;margin-bottom:6px;min-height:15px}.paper .n2 u{text-decoration:none;padding-left:6px}
+.paper hr.thick{border:0;border-top:2px solid #000;margin:8px 0 12px}
+.paper .ul{text-decoration:underline;margin-bottom:10px;font-size:11px}
+.paper .h{font-weight:700;margin:8px 0 4px 6px}.paper .h2{font-weight:700;margin:6px 0 4px 22px}
+.paper table.g{width:100%;border-collapse:collapse;margin:2px 0 4px;table-layout:fixed}
+.paper .g th,.paper .g td{border:1px solid #000;padding:2px 4px;font-size:10px;vertical-align:top;word-wrap:break-word}
+.paper .g th{background:#c0c0c0;text-align:center;font-size:9px;text-transform:uppercase}
+.paper .g th small{display:block;text-transform:none;font-weight:400;font-size:7px}
+.paper .g tr.b td{height:38px}.paper .g tr.s td{height:14px}
+.paper .g td.r{text-align:right}.paper .g td.c{text-align:center}
+.paper .tot{text-align:right;font-weight:700;margin:2px 4px 6px 0;font-size:11px}
+.paper .tot b{display:inline-block;min-width:1.5in;border-bottom:1px solid #000;font-weight:400}
+.paper .sg{width:2in;margin:26px 0 0 auto;border-top:1px solid #000;text-align:center;font-style:italic;font-size:8px}
+.paper .pg{text-align:center;font-style:italic;margin-top:14px}
+.paper,.paper *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+@media print{.paper{padding:0}}
+</style>
+</style>
+</head>
+<body>
+<header>
+  <div class="logo"><svg viewBox="0 0 40 40" width="36" height="36" role="img" aria-label="MySALN logo"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5b94ff"/><stop offset=".55" stop-color="#2a52d6"/><stop offset="1" stop-color="#0f2a85"/></linearGradient></defs><rect width="40" height="40" rx="11" fill="url(#lg)"/><path d="M0 11a11 11 0 0 1 11-11h18a11 11 0 0 1 11 11v3C28 20 12 12 0 18z" fill="#fff" opacity=".14"/><path d="M20 5.5l11.5 4v9.8c0 7.4-4.700 12.700-11.500 15.200C13.200 32 8.500 26.700 8.500 19.300V9.500z" fill="#fff"/><g stroke="#1f45c4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M20 14v13M16 27.500h8M13 16.500h14"/><path d="M13 16.500l-2.500 5.500h5zM27 16.500l-2.500 5.500h5z"/></g><circle cx="20" cy="13.200" r="2.400" fill="#f7b92b" stroke="#fff" stroke-width="1"/></svg> <span class="wm">My<b>SALN</b></span></div>
+  <button id="bTour" title="Step-by-step guide">Guide</button>
+  <button id="bImp" title="Import a SALN JSON file">Import</button>
+  <button id="bExp" title="Export all entries as JSON">Export</button>
+  <button id="bTheme" aria-label="Toggle light or dark theme" title="Toggle theme">◐ Theme</button>
+  <input type="file" id="file" accept=".json,application/json" hidden>
+</header>
+<main id="app"></main>
+<footer class="foot"><span>MySALN · Created by <a href="https://princegideon15-portfolio.vercel.app/" target="_blank" rel="noopener noreferrer">GPDB</a></span><span aria-hidden="true">·</span><a href="https://github.com/princegideon15/my-saln.git" target="_blank" rel="noopener noreferrer">GitHub</a></footer>
+<div id="printArea"></div>
+<dialog id="dlg"><h2 id="dT"></h2><p id="dM" class="mu"></p><div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px"><button id="dNo">Cancel</button><button id="dYes" class="pri">Confirm</button></div></dialog>
+<dialog id="prev" class="wide"><div style="display:flex;gap:8px;justify-content:flex-end;margin-bottom:8px"><button id="pPrint" class="pri">Print</button><button id="pDl">Download PDF</button><button id="pClose">Close</button></div><div id="pBody" style="overflow:auto"></div></dialog>
+<div id="tspot" hidden></div><div id="tcard" role="dialog" aria-label="Guide" aria-live="polite" hidden><div class="mu" id="tN" style="font-size:12px"></div><h2 id="tT" style="margin:4px 0"></h2><p id="tM" style="margin:0"></p><div id="tDots"></div><div style="display:flex;justify-content:space-between;gap:8px"><button id="tSkip">Skip</button><span style="display:flex;gap:8px"><button id="tBack">Back</button><button id="tNext" class="pri">Next</button></span></div></div>
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const peso=n=>"₱"+(+n||0).toLocaleString("en-PH",{minimumFractionDigits:2,maximumFractionDigits:2});
+const uid=()=>Math.random().toString(36).slice(2,10);
+const SP=x=>x.split("|");
+const lv=(b,n)=>Array.from({length:n},(_,i)=>b+" "+["I","II","III","IV","V","VI","VII"][i]);
+const POS=[...SP("President|Vice President|Senator|Member, House of Representatives|Party-list Representative|Governor|Vice Governor|Mayor|Vice Mayor|Sangguniang Panlalawigan Member|Sangguniang Panlungsod Member|Sangguniang Bayan Member|Punong Barangay|Barangay Kagawad|SK Chairperson|SK Kagawad|Secretary|Undersecretary|Assistant Secretary|Chairperson|Commissioner|Associate Commissioner|Administrator|Deputy Administrator|Assistant Administrator|Executive Director|Deputy Executive Director|General Manager|Assistant General Manager|President and CEO|Chief of Staff|Regional Director|Assistant Regional Director|Provincial Director|Provincial Administrator|City Administrator|Municipal Administrator|City Treasurer|Municipal Treasurer|Provincial Treasurer|City Assessor|Municipal Assessor|City Accountant|City Budget Officer|City Planning and Development Coordinator|City Legal Officer|City Civil Registrar|Municipal Civil Registrar|City Health Officer|City Engineer|Department Head|Division Chief|Section Chief|Officer-in-Charge|Chief Justice|Associate Justice|Presiding Judge|Executive Judge|Clerk of Court|Branch Clerk of Court|Prosecutor|City Prosecutor|Provincial Prosecutor|State Prosecutor|Solicitor|Ombudsman|Deputy Ombudsman|Graft Investigation and Prosecution Officer|Public Attorney|Sheriff|Court Interpreter|Court Stenographer|Process Server|Registrar of Deeds|University President|Vice President for Academic Affairs|Dean|College Secretary|Professor|Associate Professor|Assistant Professor|Instructor|Schools Division Superintendent|Assistant Schools Division Superintendent|Public Schools District Supervisor|School Head|Guidance Counselor|Medical Specialist|Rural Health Physician|Dentist|Pharmacist|Medical Technologist|Midwife|Revenue District Officer|Revenue Officer|Customs Operations Officer|Collector of Customs|Senior Administrative Assistant|Supervising Administrative Officer|Chief Administrative Officer|Senior Science Research Specialist|Supervising Science Research Specialist|Chief Science Research Specialist|Senior Economic Development Specialist|Chief Economic Development Specialist|Chief Accountant|Job Order Worker|Contract of Service Worker|Consultant|Technical Assistant|Legislative Staff Officer|Chief of Police|Fire Marshal|Jail Warden|Patrolman/Patrolwoman|Police Corporal|Police Staff Sergeant|Police Master Sergeant|Police Senior Master Sergeant|Police Chief Master Sergeant|Police Executive Master Sergeant|Police Lieutenant|Police Captain|Police Major|Police Lieutenant Colonel|Police Colonel|Police Brigadier General|Police Major General|Police Lieutenant General|Police General|Private|Private First Class|Corporal|Sergeant|Staff Sergeant|Technical Sergeant|Master Sergeant|Second Lieutenant|First Lieutenant|Captain|Major|Lieutenant Colonel|Colonel|Brigadier General|Major General|Lieutenant General|General|Fire Officer I|Jail Officer I"),
+ ...lv("Administrative Aide",6),...lv("Administrative Assistant",3),...lv("Administrative Officer",5),...lv("Accountant",4),...lv("Attorney",5),...lv("Budget Officer",5),...lv("Cashier",3),...lv("Computer Programmer",3),...lv("Engineer",5),...lv("Planning Officer",5),...lv("Human Resource Management Officer",5),...lv("Information Technology Officer",3),...lv("Information Systems Analyst",3),...lv("Information Officer",5),...lv("Internal Auditor",5),...lv("Legal Officer",5),...lv("Librarian",5),...lv("Project Development Officer",5),...lv("Science Research Specialist",2),...lv("Supply Officer",5),...lv("Records Officer",5),...lv("Training Specialist",4),...lv("Utility Worker",2),...lv("Security Guard",3),...lv("Nurse",7),...lv("Medical Officer",7),...lv("Social Welfare Officer",5),...lv("Economic Development Specialist",2),...lv("Tourism Operations Officer",5),...lv("Agriculturist",5),...lv("Executive Assistant",5),...lv("Director",4),...lv("Teacher",3),...lv("Master Teacher",4),...lv("Principal",4),...lv("Head Teacher",6),...lv("Statistical Specialist",2),...lv("Cultural Officer",3),...lv("Accounting Clerk",1)].sort();
+const AG=[...SP("Office of the President|Office of the Vice President|Presidential Communications Office|Philippine Information Agency|Senate of the Philippines|House of Representatives|Supreme Court of the Philippines|Court of Appeals|Sandiganbayan|Court of Tax Appeals|Office of the Court Administrator|Civil Service Commission|Commission on Audit|Commission on Elections|Commission on Human Rights|Office of the Ombudsman|Department of Agrarian Reform (DAR)|Department of Agriculture (DA)|Department of Budget and Management (DBM)|Department of Education (DepEd)|Department of Energy (DOE)|Department of Environment and Natural Resources (DENR)|Department of Finance (DOF)|Department of Foreign Affairs (DFA)|Department of Health (DOH)|Department of Human Settlements and Urban Development (DHSUD)|Department of Information and Communications Technology (DICT)|Department of the Interior and Local Government (DILG)|Department of Justice (DOJ)|Department of Labor and Employment (DOLE)|Department of Migrant Workers (DMW)|Department of National Defense (DND)|Department of Public Works and Highways (DPWH)|Department of Science and Technology (DOST)|Department of Social Welfare and Development (DSWD)|Department of Tourism (DOT)|Department of Trade and Industry (DTI)|Department of Transportation (DOTr)|Department of Economy, Planning, and Development (DEPDev)|Department of Agriculture – Bureau of Fisheries and Aquatic Resources (BFAR)|Bureau of Plant Industry (BPI)|National Irrigation Administration (NIA)|Philippine Coconut Authority (PCA)|Philippine Rice Research Institute (PhilRice)|National Food Authority (NFA)|Land Registration Authority (LRA)|Land Management Bureau (LMB)|Mines and Geosciences Bureau (MGB)|Forest Management Bureau (FMB)|Biodiversity Management Bureau (BMB)|Environmental Management Bureau (EMB)|National Water Resources Board (NWRB)|Bureau of Internal Revenue (BIR)|Bureau of Customs (BOC)|Bureau of the Treasury (BTr)|Insurance Commission|Philippine Statistics Authority (PSA)|Food and Drug Administration (FDA)|Philippine Health Insurance Corporation (PhilHealth)|Philippine National AIDS Council|Research Institute for Tropical Medicine (RITM)|Philippine Heart Center|Lung Center of the Philippines|National Kidney and Transplant Institute|Philippine Children’s Medical Center|Philippine General Hospital|Bureau of Fire Protection (BFP)|Philippine National Police (PNP)|Bureau of Jail Management and Penology (BJMP)|Philippine Drug Enforcement Agency (PDEA)|National Police Commission (NAPOLCOM)|Local Government Academy|National Bureau of Investigation (NBI)|Bureau of Immigration (BI)|Bureau of Corrections (BuCor)|Parole and Probation Administration (PPA)|Public Attorney’s Office (PAO)|Office of the Solicitor General (OSG)|National Prosecution Service|Presidential Commission on Good Government|Armed Forces of the Philippines (AFP)|Philippine Army|Philippine Navy|Philippine Air Force|Philippine Coast Guard (PCG)|Office of Civil Defense (OCD)|National Defense College of the Philippines|Philippine Veterans Affairs Office|National Research Council of the Philippines (NRCP)|Philippine Atmospheric, Geophysical and Astronomical Services Administration (PAGASA)|Philippine Institute of Volcanology and Seismology (PHIVOLCS)|Advanced Science and Technology Institute (ASTI)|Philippine Council for Agriculture, Aquatic and Natural Resources Research and Development (PCAARRD)|Philippine Council for Health Research and Development (PCHRD)|Philippine Council for Industry, Energy and Emerging Technology Research and Development (PCIEERD)|Science Education Institute (SEI)|Industrial Technology Development Institute (ITDI)|Food and Nutrition Research Institute (FNRI)|Forest Products Research and Development Institute (FPRDI)|Philippine Nuclear Research Institute (PNRI)|Philippine Space Agency (PhilSA)|Technology Application and Promotion Institute (TAPI)|Philippine Science High School System|Commission on Higher Education (CHED)|Technical Education and Skills Development Authority (TESDA)|Professional Regulation Commission (PRC)|National Commission for Culture and the Arts (NCCA)|National Historical Commission of the Philippines (NHCP)|National Museum of the Philippines|National Library of the Philippines|National Archives of the Philippines|Komisyon sa Wikang Filipino (KWF)|Philippine Sports Commission (PSC)|Games and Amusements Board (GAB)|Social Security System (SSS)|Government Service Insurance System (GSIS)|Home Development Mutual Fund (Pag-IBIG Fund)|Employees’ Compensation Commission (ECC)|Overseas Workers Welfare Administration (OWWA)|Philippine Overseas Employment Administration|National Labor Relations Commission (NLRC)|National Conciliation and Mediation Board (NCMB)|Bangko Sentral ng Pilipinas (BSP)|Land Bank of the Philippines (LBP)|Development Bank of the Philippines (DBP)|Philippine Deposit Insurance Corporation (PDIC)|Securities and Exchange Commission (SEC)|Philippine Competition Commission (PCC)|Anti-Money Laundering Council (AMLC)|Commission on Population and Development|Philippine Amusement and Gaming Corporation (PAGCOR)|Philippine Charity Sweepstakes Office (PCSO)|Philippine Economic Zone Authority (PEZA)|Board of Investments (BOI)|Intellectual Property Office of the Philippines (IPOPHL)|Bureau of Philippine Standards|Philippine Ports Authority (PPA)|Maritime Industry Authority (MARINA)|Civil Aeronautics Board|Civil Aviation Authority of the Philippines (CAAP)|Manila International Airport Authority (MIAA)|Land Transportation Office (LTO)|Land Transportation Franchising and Regulatory Board (LTFRB)|Philippine National Railways (PNR)|Light Rail Transit Authority (LRTA)|Metropolitan Manila Development Authority (MMDA)|Metropolitan Waterworks and Sewerage System (MWSS)|Local Water Utilities Administration (LWUA)|National Housing Authority (NHA)|Home Guaranty Corporation|National Electrification Administration (NEA)|National Power Corporation (NPC)|National Transmission Corporation (TransCo)|Energy Regulatory Commission (ERC)|Philippine National Oil Company (PNOC)|Philippine Reclamation Authority|Bases Conversion and Development Authority (BCDA)|Subic Bay Metropolitan Authority (SBMA)|Clark Development Corporation|Cagayan Economic Zone Authority (CEZA)|Tourism Infrastructure and Enterprise Zone Authority (TIEZA)|Philippine Postal Corporation (PHLPost)|National Telecommunications Commission (NTC)|People’s Television Network (PTV)|Presidential Broadcast Service|Movie and Television Review and Classification Board (MTRCB)|National Anti-Poverty Commission|National Commission on Indigenous Peoples (NCIP)|National Commission of Muslim Filipinos (NCMF)|Commission on Filipinos Overseas|Philippine Commission on Women|Council for the Welfare of Children|National Council on Disability Affairs|National Youth Commission|Bangsamoro Autonomous Region in Muslim Mindanao (BARMM)|University of the Philippines System|Polytechnic University of the Philippines (PUP)|Technological University of the Philippines (TUP)|Mindanao State University|Philippine Normal University|Bulacan State University|Batangas State University|Laguna State Polytechnic University|Cavite State University|Visayas State University|Central Luzon State University|Mariano Marcos State University|Don Mariano Marcos Memorial State University|University of Southeastern Philippines|Schools Division Office (DepEd)|DepEd Regional Office|Provincial Government of Laguna|Provincial Government of Cavite|Provincial Government of Batangas|Provincial Government of Cebu|Provincial Government of Pampanga|City Government of Manila|City Government of Quezon City|City Government of Makati|City Government of Pasig|City Government of Taguig|City Government of Biñan|City Government of Calamba|City Government of Santa Rosa|City Government of San Pedro|City Government of Cebu|City Government of Davao|City Government of Cagayan de Oro|Municipal Government (specify)|Provincial Government (specify)|City Government (specify)|Barangay (specify)|Government-Owned and Controlled Corporation (specify)|State University or College (specify)")].sort();
+const LISTS={pos:POS,ag:AG,
+ rdesc:SP("Lot|House and lot|Residential lot|Condominium unit|Condominium unit and parking slot|Townhouse|Apartment building|Commercial building|Commercial lot|Agricultural land|Rice land|Farm lot|Fishpond|Vacant lot|Improvements (house)|Memorial lot|Subdivision lot|Parking slot"),
+ kind:SP("Residential|Commercial|Industrial|Agricultural|Mixed use|Institutional|Recreational|Forest or timberland|Idle or vacant|Memorial park"),
+ mode:SP("Purchase|Inheritance|Donation|Gift|Exchange|Barter|Foreclosure|Free patent|Award|Assignment|Settlement of estate|Installment purchase|Pag-IBIG housing loan|Bank housing loan|Pre-selling purchase|Construction"),
+ pdesc:SP("Cash on hand|Cash in bank|Savings account|Time deposit|Motor vehicle (car)|Motorcycle|Truck or van|Jewelry|Appliances|Furniture and fixtures|Gadgets (mobile phone, laptop)|Stocks or shares|Mutual funds|UITF|Bonds|Pag-IBIG MP2 savings|Insurance (cash value)|Receivables|Investments|Livestock|Machinery|Equipment|Cryptocurrency|Paintings and artworks|Firearm|Cooperative share capital"),
+ lnat:SP("Housing loan|Car loan|Salary loan|Personal loan|Credit card|GSIS loan|Pag-IBIG loan|Pag-IBIG multi-purpose loan|Bank loan|Business loan|Educational loan|Cooperative loan|Emergency loan|Calamity loan|Mortgage|Accounts payable|Notes payable|Salary deduction loan"),
+ bnat:SP("Sole proprietorship|Partnership|Stockholder|Director or officer of a corporation|Cooperative member|Sari-sari store|Rental income|Franchise|Consultancy|Online business|Farming business|Professional practice|Retainer|Board membership|Investor|Financial connection – lender|Financial connection – guarantor|Foundation or association membership")};
+const PH={},REGS=[];
+`Region I – Ilocos Region|Ilocos Norte:Laoag,Batac;Ilocos Sur:Vigan,Candon;La Union:San Fernando;Pangasinan:Dagupan,Alaminos,San Carlos,Urdaneta
+Region II – Cagayan Valley|Batanes;Cagayan:Tuguegarao;Isabela:Ilagan,Cauayan,Santiago;Nueva Vizcaya;Quirino
+Region III – Central Luzon|Aurora;Bataan:Balanga;Bulacan:Malolos,Meycauayan,San Jose del Monte;Nueva Ecija:Cabanatuan,Gapan,Palayan,San Jose,Muñoz;Pampanga:Angeles,San Fernando,Mabalacat;Tarlac:Tarlac City;Zambales:Olongapo
+Region IV-A – CALABARZON|Batangas:Batangas City,Lipa,Tanauan,Santo Tomas;Cavite:Bacoor,Cavite City,Dasmariñas,General Trias,Imus,Tagaytay,Trece Martires,Carmona;Laguna:Biñan,Cabuyao,Calamba,San Pablo,San Pedro,Santa Rosa;Quezon:Lucena,Tayabas;Rizal:Antipolo
+MIMAROPA Region|Marinduque;Occidental Mindoro;Oriental Mindoro:Calapan;Palawan:Puerto Princesa;Romblon
+Region V – Bicol Region|Albay:Legazpi,Ligao,Tabaco;Camarines Norte;Camarines Sur:Iriga,Naga;Catanduanes;Masbate:Masbate City;Sorsogon:Sorsogon City
+Region VI – Western Visayas|Aklan;Antique;Capiz:Roxas;Guimaras;Iloilo:Iloilo City,Passi;Negros Occidental:Bacolod,Bago,Cadiz,Escalante,Himamaylan,Kabankalan,La Carlota,Sagay,San Carlos,Silay,Sipalay,Talisay,Victorias
+Region VII – Central Visayas|Bohol:Tagbilaran;Cebu:Cebu City,Lapu-Lapu,Mandaue,Talisay,Danao,Naga,Toledo,Carcar,Bogo;Negros Oriental:Dumaguete,Bais,Bayawan,Canlaon,Guihulngan,Tanjay;Siquijor
+Region VIII – Eastern Visayas|Biliran;Eastern Samar:Borongan;Leyte:Tacloban,Ormoc,Baybay;Northern Samar;Samar:Catbalogan,Calbayog;Southern Leyte:Maasin
+Region IX – Zamboanga Peninsula|Zamboanga del Norte:Dapitan,Dipolog;Zamboanga del Sur:Pagadian,Zamboanga City;Zamboanga Sibugay
+Region X – Northern Mindanao|Bukidnon:Malaybalay,Valencia;Camiguin;Lanao del Norte:Iligan;Misamis Occidental:Oroquieta,Ozamiz,Tangub;Misamis Oriental:Cagayan de Oro,El Salvador,Gingoog
+Region XI – Davao Region|Davao de Oro;Davao del Norte:Panabo,Samal,Tagum;Davao del Sur:Davao City,Digos;Davao Occidental;Davao Oriental:Mati
+Region XII – SOCCSKSARGEN|Cotabato:Kidapawan;Sarangani;South Cotabato:General Santos,Koronadal;Sultan Kudarat:Tacurong
+Region XIII – Caraga|Agusan del Norte:Butuan,Cabadbaran;Agusan del Sur:Bayugan;Dinagat Islands;Surigao del Norte:Surigao City;Surigao del Sur:Bislig,Tandag
+Cordillera Administrative Region (CAR)|Abra;Apayao;Benguet:Baguio;Ifugao;Kalinga:Tabuk;Mountain Province
+Bangsamoro Autonomous Region in Muslim Mindanao (BARMM)|Basilan:Lamitan,Isabela City;Lanao del Sur:Marawi;Maguindanao del Norte;Maguindanao del Sur;Sulu;Tawi-Tawi;Special Geographic Area:Cotabato City
+National Capital Region (NCR)|Metro Manila:Manila,Quezon City,Caloocan,Las Piñas,Makati,Malabon,Mandaluyong,Marikina,Muntinlupa,Navotas,Parañaque,Pasay,Pasig,San Juan,Taguig,Valenzuela,Pateros`.split("\n").forEach(l=>{const[r,ps]=l.split("|");REGS.push(r);PH[r]={};ps.split(";").forEach(x=>{const[n,c]=x.split(":");PH[r][n]=c?c.split(","):[]})});
+const ALLP=Object.values(PH).flatMap(o=>Object.keys(o)).sort(),ALLC=Object.values(PH).flatMap(o=>Object.values(o).flat()).sort();
+const locStr=r=>[r.brgy,r.city,r.prov,r.reg].filter(Boolean).join(", ")||r.loc||"";
+const SEC={
+ real:{t:"1a. Real properties",c:[["desc","Description","","rdesc","e.g. lot, house and lot, condominium and improvements"],["kind","Kind","","kind","e.g. residential, commercial, industrial, agricultural and mixed use"],["reg","Region","","reg","Exact location: choose the region, then the province, then the city or municipality"],["prov","Province","","prov"],["city","City / municipality","","city"],["brgy","Barangay / street","","","Complete the exact location with the barangay, street or lot details"],["av","Assessed value","n","","As found in the Tax Declaration of Real Property"],["fmv","Current fair market value","n"],["ay","Acquisition year"],["mode","Acquisition mode","","mode"],["cost","Acquisition cost","n"]]},
+ personal:{t:"1b. Personal properties",c:[["desc","Description","","pdesc"],["ay","Acquisition year"],["cost","Acquisition cost / amount","n"]]},
+ liab:{t:"2. Liabilities",c:[["nature","Nature","","lnat"],["cred","Name of creditors"],["bal","Outstanding balance","n"]]},
+ biz:{t:"Business interests and financial connections",c:[["ent","Name of entity / business enterprise"],["addr","Business address"],["nat","Nature of business interest and/or financial connection","","bnat"],["date","Date of acquisition of interest or connection","date"]]}
+};
+const DEC=[["fam","Family name"],["first","First name"],["mi","M.I."],["pos","Position","","pos"],["ag","Agency / office","","ag","","span"]];
+let mem=null;
+const store={get(){try{return JSON.parse(localStorage.getItem("saln.v1")||"[]")}catch(e){return mem||[]}},set(v){mem=v;try{localStorage.setItem("saln.v1",JSON.stringify(v))}catch(e){}}};
+let entries=store.get(),cur=null,dirty=false,dl=null;
+async function getDl(){if(dl)return dl;try{dl=await window.claude.use("downloads")}catch(e){}return dl}
+const blank=()=>{const y=new Date().getFullYear()-1;return{id:uid(),year:y,asof:y+"-12-31",d:{},real:[],personal:[],liab:[],biz:[],upd:Date.now()}};
+const sum=(a,k)=>(a||[]).reduce((s,r)=>s+(+r[k]||0),0);
+const tot=e=>{const A=sum(e.real,"cost")+sum(e.personal,"cost"),L=sum(e.liab,"bal");return{A,L,N:A-L,R:sum(e.real,"cost"),P:sum(e.personal,"cost")}};
+const name=e=>[e.d.first,e.d.mi,e.d.fam].filter(Boolean).join(" ")||"Unnamed declarant";
+function toast(m,ms=2600){const t=document.createElement("div");t.className="toast";t.textContent=m;document.body.append(t);setTimeout(()=>t.remove(),ms)}
+function ask(title,msg,yes="Confirm",danger){return new Promise(r=>{$("#dT").textContent=title;$("#dM").textContent=msg;const y=$("#dYes");y.textContent=yes;y.className=danger?"dng":"pri";const d=$("#dlg");const done=v=>{d.close();y.onclick=n.onclick=null;r(v)};y.onclick=()=>done(true);const n=$("#dNo");n.onclick=()=>done(false);d.oncancel=()=>r(false);d.showModal()})}
+/* ---------- list ---------- */
+let q="";
+function card(e){const t=tot(e);return`<div class="card entry" data-id="${e.id}"><div class="yr">${esc(e.year)}</div><div><b>${esc(name(e))}</b><span class="badge">as of ${esc(e.asof||e.year)}</span><div class="mu">${esc(e.d.pos||"—")} · ${esc(e.d.ag||"—")}</div><div class="mu">Total assets ${peso(t.A)} · Total liabilities ${peso(t.L)}</div></div><div class="acts"><button class="sm" data-a="edit">Edit</button><button class="sm" data-a="prev">Preview</button><button class="sm" data-a="print">Print</button><button class="sm" data-a="dl">Download</button><button class="sm" data-a="copy" title="Duplicate as next year’s draft">Copy to next year</button><button class="sm dng" data-a="del">Remove</button></div></div>`}
+function listHTML(){const k=q.toLowerCase(),l=[...entries].filter(e=>!k||(name(e)+" "+e.year+" "+(e.d.ag||"")+" "+(e.d.pos||"")).toLowerCase().includes(k)).sort((a,b)=>b.year-a.year||b.upd-a.upd);
+ return l.length?l.map(card).join(""):entries.length?`<div class="card empty mu">No entries match “${esc(q)}”.</div>`:`<div class="card empty"><h2>No SALN entries yet</h2><p class="mu">Create your first statement, or import a file you exported earlier.</p><button class="pri" data-new>New SALN</button></div>`}
+function render(){
+ if(cur)return edit();
+ const last=[...entries].sort((a,b)=>b.year-a.year)[0],lt=last?tot(last):null;
+ $("#app").innerHTML=`<div style="display:flex;gap:12px;align-items:end;flex-wrap:wrap;margin-bottom:16px"><div style="margin-right:auto"><h1>Statements of Assets, Liabilities and Net Worth</h1><div class="mu">Form AS-1 (Declarant) · one entry per filing year · stored in this browser only, so export regularly.</div></div><button class="pri" data-new>New SALN</button></div>`+
+ (entries.length?`<div class="stats"><div><b>${entries.length}</b><span>Entries</span></div><div><b>${last.year}</b><span>Latest filing year</span></div><div><b>${peso(lt.A)}</b><span>Latest total assets</span></div><div><b>${peso(lt.L)}</b><span>Latest total liabilities</span></div></div><input class="search" id="q" type="search" placeholder="Search by name, year, position or agency" value="${esc(q)}" aria-label="Search entries">`:"")+`<div id="lst">${listHTML()}</div>`;
+}
+$("#app").addEventListener("input",ev=>{if(ev.target.id==="q"){q=ev.target.value;$("#lst").innerHTML=listHTML()}});
+$("#app").addEventListener("click",async ev=>{
+ if(cur)return;if(ev.target.closest("[data-new]")){cur=blank();dirty=false;return render()}
+ const b=ev.target.closest("[data-a]");if(!b)return;const e=entries.find(x=>x.id===b.closest("[data-id]").dataset.id);
+ if(b.dataset.a==="edit"){cur=structuredClone(e);dirty=false;render()}
+ if(b.dataset.a==="prev")showPrev(e);
+ if(b.dataset.a==="print")doPrint(e);
+ if(b.dataset.a==="dl")doDl(e);
+ if(b.dataset.a==="copy"){const c=structuredClone(e);c.id=uid();c.year=+e.year+1;c.asof=c.year+"-12-31";c.upd=Date.now();entries.push(c);store.set(entries);render();toast("Draft for "+c.year+" created. Review and edit it.")}
+ if(b.dataset.a==="del"&&await ask("Remove SALN "+e.year+"?",name(e)+"’s statement for "+e.year+" will be permanently deleted. Export first if you need a copy.","Remove",true)){entries=entries.filter(x=>x.id!==e.id);store.set(entries);render();toast("Entry removed")}
+});
+/* ---------- editor ---------- */
+const cbA=cb=>cb?` data-combo="${cb}" autocomplete="off" placeholder="Search or type…" role="combobox" aria-autocomplete="list"`:"";
+const tip=h=>h?`<span class="ic" tabindex="0" role="img" aria-label="${esc(h)}" data-tip="${esc(h)}">i</span>`:"";
+function field(o,k,l,t="text",cb,w){return`<label${w?` class="${w}"`:""}>${l}<input type="${t||"text"}" data-f="${k}" value="${esc(o[k])}"${cbA(cb)}></label>`}
+function secHTML(k){const s=SEC[k];return`<div class="card" id="s-${k}" data-sec="${k}"><h2>${s.t}</h2>${(cur[k]||[]).map((r,i)=>`<div class="row"><div class="rowh"><span>#${i+1}</span><button class="sm dng" data-rm="${k}:${i}" aria-label="Remove row ${i+1}">Remove</button></div><div class="grid">${s.c.map(([c,l,t,cb,h])=>`<label>${l}${tip(h)}<input ${t==="n"?'type="number" min="0" step="0.01" inputmode="decimal"':t==="date"?'type="date"':'type="text"'} data-r="${k}:${i}:${c}" value="${esc(r[c])}"${cbA(cb)}></label>`).join("")}</div></div>`).join("")||`<div class="mu" style="margin-bottom:8px">None declared.</div>`}<button class="sm" data-add="${k}">＋ Add row</button></div>`}
+function edit(){
+ const e=cur;if(!e.asof)e.asof=e.year+"-12-31";
+ $("#app").innerHTML=`<div style="display:flex;gap:8px;align-items:center;margin-bottom:4px"><button id="bBack">← Back</button><h1 style="margin:0">${entries.some(x=>x.id===e.id)?"Edit":"New"} SALN</h1></div><div class="mu" style="margin-bottom:6px">Form AS-1 (Declarant) · CSC Resolution No. 2500632</div>
+ <nav class="chips" aria-label="Sections">${[["s-d","Declarant"],["s-real","Real properties"],["s-personal","Personal properties"],["s-liab","Liabilities"],["s-biz","Business interests"]].map(([i,l])=>`<button data-go="${i}">${l}</button>`).join("")}</nav>
+ <div class="card" id="s-d"><h2>Declarant</h2><div class="grid"><label>As of (date)<input type="date" id="asof" data-f="asof" value="${esc(e.asof)}"></label>${DEC.map(([k,l,t,cb,h,w])=>field(e.d,k,l,t,cb,w)).join("")}</div><div id="yErr" class="err" role="alert"></div></div>
+ ${["real","personal","liab","biz"].map(secHTML).join("")}
+ <div class="bar"><div><span>Total assets</span><b id="tA"></b></div><div><span>Total liabilities</span><b id="tL"></b></div><div style="margin-left:auto;display:flex;gap:8px"><button id="bCan">Cancel</button><button id="bPrev">Preview</button><button class="pri" id="bSave">Save</button></div></div>`;
+ totals();
+}
+function totals(){const t=tot(cur);$("#tA").textContent=peso(t.A);$("#tL").textContent=peso(t.L)}
+function valid(){const ok=cur.year>=1990&&cur.year<=2100;const dup=entries.some(x=>x.id!==cur.id&&x.year==cur.year&&name(x)===name(cur));$("#yErr").textContent=!ok?"Enter a valid “as of” date.":dup?"An entry for this declarant and year already exists.":"";return ok&&!dup}
+$("#app").addEventListener("input",ev=>{
+ if(!cur)return;const t=ev.target;dirty=true;
+ if(t.dataset.f){const k=t.dataset.f;if(k==="asof"){cur.asof=t.value;cur.year=+t.value.slice(0,4)||0}else cur.d[k]=t.value}
+ if(t.dataset.r){const[k,i,c]=t.dataset.r.split(":");cur[k][i][c]=t.type==="number"?t.value:t.value;totals()}
+ if(t.name==="fl")cur.filing=t.value;
+});
+$("#app").addEventListener("click",async ev=>{
+ if(!cur)return;const t=ev.target.closest("button");if(!t)return;
+ if(t.dataset.go){document.getElementById(t.dataset.go).scrollIntoView({behavior:"smooth"});return}
+ if(t.dataset.add){cur[t.dataset.add].push({});dirty=true;keep(()=>edit())}
+ if(t.dataset.rm){const[k,i]=t.dataset.rm.split(":");cur[k].splice(+i,1);dirty=true;keep(()=>edit())}
+ if(t.id==="bBack"||t.id==="bCan"){if(!dirty||await ask("Discard changes?","Your unsaved edits will be lost.","Discard",true)){cur=null;render()}}
+ if(t.id==="bPrev")showPrev(cur);
+ if(t.id==="bSave"){if(!valid()){$("#asof").focus();return}cur.upd=Date.now();const i=entries.findIndex(x=>x.id===cur.id);i<0?entries.push(cur):entries[i]=cur;store.set(entries);cur=null;render();toast("SALN saved")}
+});
+function keep(fn){const y=scrollY;fn();scrollTo(0,y)}
+/* ---------- official layout ---------- */
+function docHTML(e){
+ const d=e.d,t=tot(e),m=v=>v===""||v==null?"":peso(v);
+ const pad=(r,n)=>{r=[...(r||[])];while(r.length<n)r.push({});return r};
+ const asof=e.asof?new Date(e.asof+"T00:00:00").toLocaleDateString("en-PH",{year:"numeric",month:"long",day:"numeric"}):"";
+ const rows=(a,n,cls,f)=>pad(a,n).map(r=>`<tr class="${cls}">${f(r)}</tr>`).join("");
+ return`<div class="paper"><div class="hdr">SALN Form AS-1 (Declarant)<br>Per CSC Resolution No. 2500632<br>Promulgated on 25 June 2025</div>
+ <div class="ttl"><b>SWORN STATEMENT OF ASSETS,</b><span>As of <u class="asof">${esc(asof)}</u></span><b>LIABILITIES AND NET WORTH</b></div>
+ <div class="c it">(Additional sheet/s for the declarant)</div>
+ <div class="nm"><div><b>NAME:</b><div class="ln"><span>${esc(d.fam)}</span><span>${esc(d.first)}</span><span>${esc(d.mi)}</span></div><div class="lb"><span>(Family Name)</span><span>(First Name)</span><span>(M.I.)</span></div></div><div class="n2"><div><b>POSITION:</b><u>${esc(d.pos)}</u></div><div><b>AGENCY/OFFICE:</b><u>${esc(d.ag)}</u></div></div></div>
+ <hr class="thick"><div class="c ul"><b>ASSETS, LIABILITIES AND NET WORTH</b></div>
+ <div class="h">1. &nbsp; ASSETS</div><div class="h2">a. &nbsp; Real Properties</div>
+ <table class="g"><colgroup><col style="width:17%"><col style="width:17%"><col style="width:17%"><col style="width:11%"><col style="width:13%"><col style="width:6%"><col style="width:8%"><col style="width:11%"></colgroup>
+ <tr><th rowspan="2">Description<small>(e.g. lot, house and lot, condominium and improvements)</small></th><th rowspan="2">Kind<small>(e.g. residential, commercial, industrial, agricultural and mixed use)</small></th><th rowspan="2">Exact Location</th><th>Assessed Value</th><th>Current Fair Market Value</th><th colspan="2">Acquisition</th><th rowspan="2">Acquisition Cost</th></tr>
+ <tr><th colspan="2"><small>(As found in the Tax Declaration of Real Property)</small></th><th>Year</th><th>Mode</th></tr>
+ ${rows(e.real,4,"b",r=>`<td>${esc(r.desc)}</td><td>${esc(r.kind)}</td><td>${esc(locStr(r))}</td><td class="r">${m(r.av)}</td><td class="r">${m(r.fmv)}</td><td class="c">${esc(r.ay)}</td><td>${esc(r.mode)}</td><td class="r">${m(r.cost)}</td>`)}</table>
+ <div class="tot">Subtotal: <b>${peso(t.R)}</b></div>
+ <div class="h2" style="margin-left:6px">b. Personal Properties</div>
+ <table class="g"><colgroup><col style="width:68%"><col style="width:14%"><col style="width:18%"></colgroup><tr><th>Description</th><th>Acquisition Year</th><th>Acquisition Cost / Amount</th></tr>
+ ${rows(e.personal,4,"s",r=>`<td>${esc(r.desc)}</td><td class="c">${esc(r.ay)}</td><td class="r">${m(r.cost)}</td>`)}</table>
+ <div class="tot">Subtotal: <b>${peso(t.P)}</b></div><div class="tot">TOTAL ASSETS: <b>${peso(t.A)}</b></div>
+ <div class="h">2. &nbsp; LIABILITIES</div>
+ <table class="g"><colgroup><col style="width:33%"><col style="width:42%"><col style="width:25%"></colgroup><tr><th>Nature</th><th>Name of Creditors</th><th>Outstanding Balance</th></tr>
+ ${rows(e.liab,4,"s",r=>`<td>${esc(r.nature)}</td><td>${esc(r.cred)}</td><td class="r">${m(r.bal)}</td>`)}</table>
+ <div class="tot">TOTAL LIABILITIES: <b>${peso(t.L)}</b></div>
+ <div class="c ul" style="margin-top:16px"><b>BUSINESS INTERESTS AND FINANCIAL CONNECTIONS</b></div>
+ <table class="g"><tr><th>Name of Entity/Business Enterprise</th><th>Business Address</th><th>Nature of Business Interest &amp;/or Financial Connection</th><th>Date of Acquisition of Interest or Connection</th></tr>
+ ${rows(e.biz,3,"b",r=>`<td>${esc(r.ent)}</td><td>${esc(r.addr)}</td><td>${esc(r.nat)}</td><td class="c">${esc(r.date)}</td>`)}</table>
+ <div class="sg">Signature/Initial of Declarant</div><div class="pg">Page ____ of ____</div></div>`}
+const fullDoc=e=>`<!DOCTYPE html><html><head><meta charset="utf-8"><title>SALN ${esc(e.year)}</title><style>${$("#docstyle").textContent}@page{size:8.5in 13in;margin:.5in}body{margin:0}.paper .hdr{position:fixed;top:-.32in;right:0;margin:0}</style></head><body>${docHTML(e)}</body></html>`;
+function doPrint(e){$("#printArea").innerHTML=docHTML(e);setTimeout(()=>{try{print()}catch(x){toast("Printing is blocked in this view. Use Download PDF, then print the PDF.",6000)}},80)}
+addEventListener("afterprint",()=>{$("#printArea").innerHTML=""});
+function showPrev(e){const p=$("#prev");$("#pBody").innerHTML=docHTML(e);$("#pPrint").onclick=()=>doPrint(e);$("#pDl").onclick=()=>doDl(e);$("#pClose").onclick=()=>p.close();p.showModal()}
+function anchorSave(f,data){const u=URL.createObjectURL(data instanceof Blob?data:new Blob([data]));const a=document.createElement("a");a.href=u;a.download=f;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),8000)}
+async function save(filename,data,ok){const d=await getDl();if(!d){anchorSave(filename,data);return toast("Download started. If nothing happens, open the artifact in claude.ai.",5000)}
+ try{await d.save({filename,data});toast(ok)}catch(x){const c=x&&x.code;if(c==="declined")return;if(["unavailable","not_granted","capability_disabled","capability_removed"].includes(c)){anchorSave(filename,data);return toast("Download started. If nothing happens, open the artifact in claude.ai.",5000)}toast("Couldn’t save the file ("+(c||"error")+").",6000)}}
+const loadJs=u=>new Promise((ok,no)=>{const s=document.createElement("script");s.src=u;s.onload=ok;s.onerror=no;document.head.append(s)});
+async function mkPdf(e){
+ if(!window.html2canvas)await loadJs("https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js");
+ if(!window.jspdf)await loadJs("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js");
+ const h=document.createElement("div");h.style.cssText="position:fixed;left:-9999px;top:0;width:720px;background:#fff";h.innerHTML="<style>"+$("#docstyle").textContent+".paper{padding:0;max-width:none}.paper .hdr{display:none}</style>"+docHTML(e);document.body.append(h);
+ const cv=await html2canvas(h.querySelector(".paper"),{scale:2,backgroundColor:"#fff"});h.remove();
+ const pdf=new window.jspdf.jsPDF({unit:"in",format:[8.5,13]}),per=Math.floor(cv.width*12.2/7.5);
+ for(let y=0,i=0;y<cv.height;y+=per,i++){const c=document.createElement("canvas");c.width=cv.width;c.height=Math.min(per,cv.height-y);c.getContext("2d").drawImage(cv,0,y,cv.width,c.height,0,0,cv.width,c.height);if(i)pdf.addPage([8.5,13]);
+  pdf.setFont("times","normal");pdf.setFontSize(7);["SALN Form AS-1 (Declarant)","Per CSC Resolution No. 2500632","Promulgated on 25 June 2025"].forEach((t,k)=>pdf.text(t,6.2,.3+k*.12));
+  pdf.addImage(c.toDataURL("image/jpeg",.95),"JPEG",.5,.7,7.5,c.height*7.5/cv.width)}
+ return pdf.output("blob")}
+async function doDl(e){const f=`SALN-${e.year}-${(e.d.fam||"declarant").replace(/[^\w-]+/g,"_")}`;toast("Preparing PDF…");
+ try{save(f+".pdf",await mkPdf(e),"PDF ready.")}catch(x){save(f+".html",fullDoc(e),"PDF isn’t available here, so an HTML copy was saved. Open it and print.")}}
+/* ---------- combobox ---------- */
+const CB=document.createElement("div");CB.id="cb";CB.hidden=true;CB.setAttribute("role","listbox");document.body.append(CB);
+let cbIn=null,cbI=-1,cbL=[];
+function cbShow(inp){cbIn=inp;const src=listFor(inp),v=inp.value.trim().toLowerCase();let m=v?src.filter(x=>x.toLowerCase().includes(v)):src.slice();if(v)m.sort((a,b)=>b.toLowerCase().startsWith(v)-a.toLowerCase().startsWith(v));cbL=m.slice(0,40);cbI=-1;
+ const r=inp.getBoundingClientRect();Object.assign(CB.style,{left:r.left+"px",top:r.bottom+4+"px",width:Math.max(r.width,260)+"px"});
+ CB.innerHTML=cbL.length?cbL.map((x,i)=>`<div role="option" data-i="${i}">${esc(x)}</div>`).join(""):`<div class="nm0">No match. Your text will be used as typed.</div>`;CB.hidden=false}
+function cbHide(){CB.hidden=true;cbIn=null}
+function sib(inp,c){const k=inp.dataset.r&&inp.dataset.r.split(":");return k?document.querySelector(`[data-r="${k[0]}:${k[1]}:${c}"]`):null}
+function listFor(inp){const c=inp.dataset.combo;if(c==="reg")return REGS;if(c==="prov"||c==="city"){const P=PH[(sib(inp,"reg")||{}).value];if(c==="prov")return P?Object.keys(P):ALLP;const p=(sib(inp,"prov")||{}).value;return P&&P[p]?P[p]:P?Object.values(P).flat():ALLC}return LISTS[c]||[]}
+function cbPick(i){if(!cbIn||!cbL[i])return;const c=cbIn.dataset.combo,el=cbIn;el.value=cbL[i];el.dispatchEvent(new Event("input",{bubbles:true}));cbHide();(c==="reg"?["prov","city"]:c==="prov"?["city"]:[]).forEach(x=>{const o=sib(el,x);if(o&&o.value){o.value="";o.dispatchEvent(new Event("input",{bubbles:true}));cbHide()}})}
+document.addEventListener("focusin",e=>{if(e.target.dataset&&e.target.dataset.combo)cbShow(e.target)});
+document.addEventListener("input",e=>{if(e.target===cbIn)cbShow(cbIn)});
+document.addEventListener("keydown",e=>{if(!cbIn||CB.hidden)return;if(e.key==="ArrowDown"||e.key==="ArrowUp"){e.preventDefault();if(!cbL.length)return;cbI=(cbI+(e.key==="ArrowDown"?1:-1)+cbL.length)%cbL.length;[...CB.children].forEach((c,i)=>c.classList.toggle("on",i===cbI));CB.children[cbI].scrollIntoView({block:"nearest"})}else if(e.key==="Enter"&&cbI>=0){e.preventDefault();cbPick(cbI)}else if(e.key==="Escape"||e.key==="Tab")cbHide()});
+CB.addEventListener("mousedown",e=>{e.preventDefault();const i=e.target.closest("[data-i]");if(i)cbPick(+i.dataset.i)});
+document.addEventListener("click",e=>{if(e.target!==cbIn)cbHide()});
+addEventListener("scroll",e=>{if(e.target!==CB&&!CB.contains(e.target))cbHide()},true);addEventListener("resize",cbHide);
+/* ---------- theme, import, export ---------- */
+function theme(v){document.documentElement.dataset.theme=v;try{localStorage.setItem("saln.theme",v)}catch(e){}}
+try{const v=localStorage.getItem("saln.theme");if(v)document.documentElement.dataset.theme=v}catch(e){}
+$("#bTheme").onclick=()=>{const dark=document.documentElement.dataset.theme?document.documentElement.dataset.theme==="dark":matchMedia("(prefers-color-scheme:dark)").matches;theme(dark?"light":"dark")};
+$("#bExp").onclick=()=>entries.length?save("saln-export.json",JSON.stringify({app:"saln",version:1,entries},null,2),"Exported "+entries.length+" entries."):toast("Nothing to export yet.");
+$("#bImp").onclick=()=>$("#file").click();
+$("#file").onchange=async ev=>{
+ const f=ev.target.files[0];ev.target.value="";if(!f)return;
+ try{const j=JSON.parse(await f.text());const inc=(j.app==="saln"?j.entries:null);if(!Array.isArray(inc))throw 0;
+  const clean=inc.filter(x=>x&&x.year&&x.d).map(x=>({...blank(),...x,id:x.id||uid()}));
+  if(!clean.length)throw 0;
+  if(!await ask("Import "+clean.length+" entries?","Entries with the same ID will be replaced; others will be added.","Import"))return;
+  clean.forEach(x=>{const i=entries.findIndex(y=>y.id===x.id);i<0?entries.push(x):entries[i]=x});
+  store.set(entries);cur=null;render();toast("Imported "+clean.length+" entries")
+ }catch(x){toast("That file isn’t a valid SALN export.")}
+};
+const TOUR=[
+ ["Welcome","This guide points to each section in turn. Use Next, or press Esc to leave at any time.","header .logo","l"],
+ ["Start a new SALN","Press New SALN to create the statement for a filing year.","[data-new]","l"],
+ ["Declarant","Set the “As of” date (usually December 31 of the filing year), then your name, position and agency. Position and agency are search-and-type fields.","#s-d","e"],
+ ["Real properties","Add a row for each lot, house or condominium. Hover or tap the “i” icons for hints, and choose region, province and city for the exact location.","#s-real","e"],
+ ["Personal properties","List cash, vehicles, investments and similar items with their acquisition year and cost.","#s-personal","e"],
+ ["Liabilities","List loans and debts with the creditor and the outstanding balance.","#s-liab","e"],
+ ["Business interests","Declare any business, shares or financial connections. Leave it empty if you have none.","#s-biz","e"],
+ ["Totals, preview and save","Totals update as you type. Press Preview to check the official layout, then Save.",".bar","e"],
+ ["Your entries","Each year has its own entry. Preview, Print, Download PDF, Copy to next year, Edit and Remove are on each card.",".entry .acts|#lst","l"],
+ ["Backups","Export saves all entries to a file and Import restores them. Do this regularly, since data stays in this browser.","#bExp","l"]];
+let ti=-1;
+const tEl=()=>TOUR[ti][2].split("|").map(x=>document.querySelector(x)).find(Boolean);
+function tour(i){
+ if(i===0&&cur&&dirty){toast("Save or cancel your edits first, then open the guide.",4000);return}
+ ti=i;const m=TOUR[i][3];if(m==="e"&&!cur){cur=blank();dirty=false;render()}else if(m==="l"&&cur){cur=null;render()}
+ $("#tN").textContent="Step "+(i+1)+" of "+TOUR.length;$("#tT").textContent=TOUR[i][0];$("#tM").textContent=TOUR[i][1];
+ $("#tDots").innerHTML=TOUR.map((_,j)=>`<i class="${j===i?"on":""}"></i>`).join("");$("#tBack").disabled=!i;$("#tNext").textContent=i===TOUR.length-1?"Done":"Next";
+ $("#tcard").hidden=false;const el=tEl();if(el)el.scrollIntoView({block:el.getBoundingClientRect().height>innerHeight*.6?"start":"center"});requestAnimationFrame(place)}
+function place(){if(ti<0)return;const el=tEl(),sp=$("#tspot"),c=$("#tcard");if(!el){sp.hidden=true;return}
+ const r=el.getBoundingClientRect();sp.hidden=false;Object.assign(sp.style,{left:r.left-6+"px",top:r.top-6+"px",width:r.width+12+"px",height:r.height+12+"px"});
+ const h=c.offsetHeight,big=r.height>innerHeight*.6;let top=big?innerHeight-h-12:r.bottom+14;if(!big&&top+h>innerHeight-8)top=r.top-h-14;
+ c.style.top=Math.max(8,top)+"px";c.style.left=Math.min(Math.max(8,r.left),innerWidth-c.offsetWidth-8)+"px"}
+function closeTour(){ti=-1;$("#tcard").hidden=true;$("#tspot").hidden=true;if(cur&&!dirty){cur=null;render()}}
+addEventListener("scroll",place,true);addEventListener("resize",place);
+addEventListener("keydown",e=>{if(e.key==="Escape"&&ti>=0)closeTour()});
+$("#tNext").onclick=()=>ti===TOUR.length-1?closeTour():tour(ti+1);$("#tBack").onclick=()=>tour(ti-1);$("#tSkip").onclick=closeTour;$("#bTour").onclick=()=>tour(0);
+render();
+try{if(!localStorage.getItem("saln.tour")){localStorage.setItem("saln.tour","1");tour(0)}}catch(e){}
+</script>
+</body>
+</html>
